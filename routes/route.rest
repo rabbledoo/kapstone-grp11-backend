@@ -1,0 +1,29 @@
+GET http://localhost:3000/users
+
+###
+
+GET http://localhost:3000/users/1
+
+###
+
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "name": "Scott Tarnowsky",
+    "displayName": "scott1",
+    "password": "123abc"
+}
+
+###
+
+DELETE http://localhost:3000/users/1
+
+###
+
+PATCH http://localhost:3000/users/1
+Content-Type: application/json
+
+{
+    
+}
