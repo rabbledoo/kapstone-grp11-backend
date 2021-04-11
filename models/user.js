@@ -5,6 +5,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required:true
     },
+    // about: {
+    //     type: String,
+    //     required:true
+    // },
     displayName: {
         type: String,
         required:true
@@ -13,11 +17,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         required:true
     },
-    joinDate: {
-        type: Date,
-        required: true,
-        default: Date.now
-    }
+    // joinDate: {
+    //     type: Date,
+    //     required: true,
+    //     default: Date.now  //
+    // }
 })
 
 module.exports = mongoose.model('User', userSchema)

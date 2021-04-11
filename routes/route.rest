@@ -25,5 +25,5 @@ PATCH http://localhost:3000/users/1
 Content-Type: application/json
 
 {
-    
+    "name": "new name"
 }
