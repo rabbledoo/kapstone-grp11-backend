@@ -12,7 +12,7 @@ const User = require("../models/user");
 //     }
 // })
 
-User.f; //example
+User.findById(); //example to find a user
 
 //getting one user
 router.get("/:id", getUser, (req, res) => {
