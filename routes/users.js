@@ -18,7 +18,8 @@ User.findById(); //example to find a user
 router.get("/:id", getUser, (req, res) => {
   res.json(res.user);
 });
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
+    const users = await User.find({})
   res.send("hello");
 });
 //creating user

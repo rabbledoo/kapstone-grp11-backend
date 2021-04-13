@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         required:true
     },
+    id: {
+        type: String,
+       
+    }
     // joinDate: {
     //     type: Date,
     //     required: true,

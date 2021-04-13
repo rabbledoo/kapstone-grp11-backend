@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const usersRouter = require("./routes/users");
 const express = require("express");
 const app = express();
 const port = 4000;
@@ -19,7 +20,21 @@ mongoose
 
 app.use(express.json());
 
-const usersRouter = require("./routes/users");
+app.use(function (req, res, next) {
+  //Website you wish to allow to connect
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+
+  next();
+});
+
 app.use("/users", usersRouter);
 
 // app.get("/", (req, res) => {
