@@ -35,7 +35,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use("/users", usersRouter);
+app.use("/", usersRouter);
 
 // app.get("/", (req, res) => {
 //   console.log("get request recieved");
