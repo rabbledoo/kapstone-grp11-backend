@@ -12,18 +12,23 @@ const User = require("../models/user");
 //     }
 // })
 
+// communicate the URL to the front end.
+
 User.findById(); //example to find a user
 
 //getting one user
-router.get("/:id", getUser, (req, res) => {
-  res.json(res.user);
+router.get("/users/:id", async (req, res) => {
+  console.log("hello friend");
+  console.log(req.params.id);
+  const user = await User.findById(req.params.id).exec();
+  res.status(200).json(user);
 });
 router.get("/", async (req, res) => {
-    const users = await User.find({})
+  const users = await User.find({});
   res.send("hello");
 });
 //creating user
-router.post("/", async (req, res) => {
+router.post("/users", async (req, res) => {
   console.log(req.body);
   const user = new User({
     name: req.body.name,
@@ -39,18 +44,20 @@ router.post("/", async (req, res) => {
 });
 
 //updating user
-router.patch("/:id", getUser, async (req, res) => {
+router.patch("/users/:id", async (req, res) => {
+  const user = await User.findById(req.params.id).exec();
+  console.log(user);
   if (req.body.name != null) {
-    res.user.name = req.body.name;
+    user.name = req.body.name;
   }
   if (req.body.displayName != null) {
-    res.user.displayName = req.body.displayName;
+    user.displayName = req.body.displayName;
   }
   if (req.body.password != null) {
-    res.user.password = req.body.password;
+    user.password = req.body.password;
   }
   try {
-    const updatedUser = await res.user.save();
+    const updatedUser = await user.save();
     res.json(updatedUser);
   } catch (err) {
     res.status(400).json({ message: err.message });
