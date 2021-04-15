@@ -46,7 +46,8 @@ router.post("/users", async (req, res) => {
 //updating user
 router.patch("/users/:id", async (req, res) => {
   const user = await User.findById(req.params.id).exec();
-//   console.log(user);
+
+  console.log(user);
   if (req.body.name != null) {
     user.name = req.body.name;
   }
@@ -65,20 +66,17 @@ router.patch("/users/:id", async (req, res) => {
 });
 
 //deleting user
-router.delete("/:id",  async (req, res) => {
-    const user = await User.findById(req.params.id).exec();
+router.delete("/users/:id",  async (req, res) => {
+    const user = await User.findByIdAndDelete(req.params.id).exec();
     console.log(user)
   try {
-    await res.user.remove();
-    res.json({ message: "deleted user" });
+    res.json({ message: "user has been deleted" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-//
-//getting user friends list
-//getting
+// source: https://www.youtube.com/watch?v=cwa6LciFPmA
 
 async function getUser(req, res, next) {
   let user;
