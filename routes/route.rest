@@ -27,3 +27,12 @@ Content-Type: application/json
 {
     "name": "new name"
 }
+
+###
+
+POST http://localhost:4000/login
+Content-Type: application/json
+
+{
+    "name":"linds"
+}

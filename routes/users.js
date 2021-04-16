@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
+const jwt = require('jsonwebtoken')
 
 //getting all users
 // router.get('/', async (req, res) => {
@@ -75,6 +76,29 @@ router.delete("/users/:id",  async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+//login 
+router.post('/login', (req, res) => {
+    //Authenticate User
+
+    const name = req.body.name
+    const user = {name: name}
+    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
+    res.json({accessToken: accessToken})
+})
+
+function authenticateToken(req,res,next) {
+    const authHeader = req.headers['authorization']
+    const token = authHeader && authHeader.split(' ') [1]
+    if (token == null) return res.sendStatus(401)
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err,user) => {
+        if (err) return res.sendStatus(403)
+        req.user = user
+        next()
+    })
+}
+
 
 // source: https://www.youtube.com/watch?v=cwa6LciFPmA
 
