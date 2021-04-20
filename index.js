@@ -5,6 +5,7 @@ const express = require("express");
 const app = express();
 const port = 4000;
 const mongoose = require("mongoose");
+const jwt = require("jsonwebtoken");
 
 mongoose
   .connect(
@@ -22,16 +23,17 @@ app.use(express.json());
 
 app.use(function (req, res, next) {
   //Website you wish to allow to connect
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  res.header(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
-
+  res.header({ "Access-Control-Allow-Origin": "*" });
+  res.header({
+    "Access-Control-Allow-Headers":
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+  });
+  res.header({
+    "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, PATCH, DELETE",
+  });
+  if (req.method === "OPTIONS") {
+    res.sendStatus(200);
+  }
   next();
 });
 
