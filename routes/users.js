@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 
 //getting all users
 // router.get('/', async (req, res) => {
@@ -67,9 +67,9 @@ router.patch("/users/:id", async (req, res) => {
 });
 
 //deleting user
-router.delete("/users/:id",  async (req, res) => {
-    const user = await User.findByIdAndDelete(req.params.id).exec();
-    console.log(user)
+router.delete("/users/:id", async (req, res) => {
+  const user = await User.findByIdAndDelete(req.params.id).exec();
+  console.log(user);
   try {
     res.json({ message: "user has been deleted" });
   } catch (err) {
@@ -77,32 +77,33 @@ router.delete("/users/:id",  async (req, res) => {
   }
 });
 
-//login 
-router.post('/login', (req, res) => {
-    //Authenticate User
+//access id from the object id in mongo db
+//
 
-    const name = req.body.name
-    const user = {name: name}
-    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET)
-    res.json({accessToken: accessToken})
-})
+//login
+router.post("/login", async (req, res) => {
+  //Authenticate User
+  const fullUser = await User.findOne({ name: req.body.name });
+  const name = req.body.name;
+  const user = { name: name };
+  const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+  res.json({ id: fullUser._id, name: name, accessToken: accessToken });
+});
 
-function authenticateToken(req,res,next) {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ') [1]
-    if (token == null) return res.sendStatus(401)
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (token == null) return res.sendStatus(401);
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err,user) => {
-        if (err) return res.sendStatus(403)
-        req.user = user
-        next()
-    })
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
 }
-
 
 // source: https://www.youtube.com/watch?v=cwa6LciFPmA
 // source: https://www.youtube.com/watch?v=mbsmsi7l3r4
-
 
 async function getUser(req, res, next) {
   let user;
